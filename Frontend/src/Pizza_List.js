@@ -97,7 +97,7 @@ var pizza_info = [
         }
     },
     {
-        id:17,
+        id:5,
         icon:'assets/images/pizza_3.jpg',
         title: "Маргарита",
         type: 'Вега піца',
@@ -110,10 +110,15 @@ var pizza_info = [
             weight: 370,
             size: 30,
             price: 89
+        },
+        big_size:{
+            weight: 700,
+            size: 40,
+            price: 299
         }
     },
     {
-        id:43,
+        id:6,
         icon:'assets/images/pizza_6.jpg',
         title: "Мікс смаків",
         type: 'М’ясна піца',
@@ -136,7 +141,7 @@ var pizza_info = [
         }
     },
     {
-        id:90,
+        id:7,
         icon:'assets/images/pizza_8.jpg',
         title: "Дольче Маре",
         type: 'Морська піца',
@@ -145,6 +150,11 @@ var pizza_info = [
             cheese: ['сир моцарелла'],
             additional: ['оливкова олія', 'вершки']
         },
+        small_size:{
+            weight: 370,
+            size: 30,
+            price: 99
+        },
         big_size:{
             weight: 845,
             size: 40,
@@ -152,7 +162,7 @@ var pizza_info = [
         }
     },
     {
-        id:6,
+        id:8,
         icon:'assets/images/pizza_4.jpg',
         title: "Россо Густо",
         type: 'Морська піца',
