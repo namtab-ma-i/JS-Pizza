@@ -8,6 +8,38 @@ var Pizza_List = require('../Pizza_List');
 //HTML едемент куди будуть додаватися піци
 var $pizza_list = $("#pizza_list");
 
+var all = document.getElementById("all");
+
+all.onclick = function () {
+  //  alert("All clicked");
+    filterPizza('all');
+}
+
+var meat = document.getElementById("meat");
+
+meat.onclick = function () {
+   // alert("meat clicked");
+    filterPizza('meat');
+}
+
+var vegan = document.getElementById("vegan");
+
+vegan.onclick = function () {
+   // alert("vegan clicked");
+    filterPizza('vegan');
+}
+
+var ocean = document.getElementById("ocean");
+
+ocean.onclick = function () {
+   // alert("ocean clicked");
+    filterPizza('ocean');
+}
+
+
+
+
+
 function showPizzaList(list) {
     //Очищаємо старі піци в кошику
     $pizza_list.html("");
@@ -29,26 +61,43 @@ function showPizzaList(list) {
     }
 
     list.forEach(showOnePizza);
+    $(".count-all").text(pizza_shown.length);
 }
 
 function filterPizza(filter) {
     //Масив куди потраплять піци які треба показати
     var pizza_shown = [];
 
-    Pizza_List.forEach(function(pizza){
-        //Якщо піка відповідає фільтру
-        //pizza_shown.push(pizza);
-
-        //TODO: зробити фільтри
-    });
-
+    if (filter === 'all') {
+        Pizza_List.forEach(function (pizza) {
+            pizza_shown.push(pizza);
+        });
+    }
+    else if (filter == 'vegan') {
+        Pizza_List.forEach(function (pizza) {
+            //Якщо піка відповідає фільтру
+            if (!pizza.content['meat'] && !pizza.content['ocean']) {
+                pizza_shown.push(pizza);
+            }
+        });
+    } else {
+        Pizza_List.forEach(function (pizza) {
+            //Якщо піка відповідає фільтру
+            if (pizza.content[filter]) {
+                pizza_shown.push(pizza);
+            }
+        });
+    }
     //Показати відфільтровані піци
+    var $label_count = $(".count-all");
+    $label_count.text(pizza_shown.length);
     showPizzaList(pizza_shown);
+
 }
 
 function initialiseMenu() {
     //Показуємо усі піци
-    showPizzaList(Pizza_List)
+    filterPizza('all');
 }
 
 exports.filterPizza = filterPizza;
