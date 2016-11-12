@@ -1,9 +1,53 @@
-<div>
-    <%= pizza.title %> (<%= size %>)
-    <div>Ціна: <%= pizza[size].price %> грн.</div>
-    <div>
-        <button class="btn btn-danger minus">-</button>
-        <span class="label label-default"><%= quantity %></span>
-        <button class="btn btn-success plus">+</button>
+<%
+
+function getSizeValues(pizza, size) {
+    //Отримує вміст піци
+    var content;
+    if(size == "small_size") {
+        content = pizza.small_size;
+    }else{
+        content = pizza.big_size;
+    }
+    var result = [];
+
+    //Object.keys повертає масив ключів в об’єкті JavaScript
+
+    Object.keys(content).forEach(function(key){
+
+        //a.concat(b) створює спільний масив із масивів a та b
+        result = result.concat(content[key]);
+    });
+
+    return result;
+}
+
+%>
+
+
+
+<div class="good">
+    <img class="right-img" src="<%= pizza.icon %>">
+    <span class="good-title"><%= pizza.title %></span>
+    <div class="details">
+        <img src="assets/images/size-icon.svg">
+        <span><%= getSizeValues(pizza, size)[1] %></span>
+        <img class="apply-margin" src="assets/images/weight.svg">
+        <span><%= getSizeValues(pizza, size)[0] %></span>
+    </div>
+    <div class="bottom-row-good">
+        <div class="good-price">
+            <span><%= getSizeValues(pizza, size)[2] %> грн.</span>
+        </div>
+        <div class="plus-minus">
+            <button class="button-minus" data-title="Decrease">-</button>
+            <span class="count"><%= quantity %></span>
+            <button class="button-plus" data-title="Increase">+</button>
+        </div>
+        <div class="bought-delete">
+                    <span>
+                        <button class="button-delete" data-title="Remove">X</button>
+                    </span>
+        </div>
     </div>
 </div>
+

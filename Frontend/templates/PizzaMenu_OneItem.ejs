@@ -16,26 +16,90 @@ function getIngredientsArray(pizza) {
     return result;
 }
 
+
+function getSmallSizeValues(pizza) {
+    //Отримує вміст піци
+    var content = pizza.small_size;
+    var result = [];
+
+    //Object.keys повертає масив ключів в об’єкті JavaScript
+
+    Object.keys(content).forEach(function(key){
+
+        //a.concat(b) створює спільний масив із масивів a та b
+        result = result.concat(content[key]);
+    });
+
+    return result;
+}
+
+function getBigSizeValues(pizza) {
+    //Отримує вміст піци
+    var content = pizza.big_size;
+    var result = [];
+
+    //Object.keys повертає масив ключів в об’єкті JavaScript
+
+    Object.keys(content).forEach(function(key){
+
+        //a.concat(b) створює спільний масив із масивів a та b
+        result = result.concat(content[key]);
+    });
+
+    return result;
+}
+
+
    %>
-<div class="col-md-6 col-lg-4 pizza-card">
-    <div class="thumbnail">
-        <img class="pizza-icon" src="<%= pizza.icon %>" alt="Pizza">
 
-        <% if(pizza.is_new) { %>
-        <span class="label label-danger">Нова</span>
-        <% } else if(pizza.is_popular) {%>
-        <span class="label label-success">Популярна</span>
-        <% } %>
 
+<div class="col-sm-6 col-md-4 col-lg-4">
+    <div class="thumbnail pizza-card">
+        <img src="<%= pizza.icon %>">
         <div class="caption">
-            <span class="title"><%= pizza.title %></span>
-            <div class="type"><%= pizza.type %></div>
-            <div class="description">
-                <%= getIngredientsArray(pizza).join(", ") %>
+            <h3><%= pizza.title %></h3>
+            <p class="type"><%= pizza.type %></p>
+            <p><%= getIngredientsArray(pizza).join(", ") %> </p>
+            <div class="row columns-on-label">
+                <div class="col-md-6 col-sm-6 center-column">
+                    <div class="row">
+                        <img src="assets/images/size-icon.svg">
+                        <span><%=  getSmallSizeValues(pizza)[1] %></span>
+                    </div>
+                    <div class="row">
+                        <img class="apply-margin" src="assets/images/weight.svg">
+                        <span><%=  getSmallSizeValues(pizza)[0] %></span>
+                    </div>
+                    <div class="row">
+                        <span class="price"><%=  getSmallSizeValues(pizza)[2] %></span>
+                    </div>
+                    <div class="row">
+                        <span class="cnter">uah</span>
+                    </div>
+                    <div class="row">
+                        <button class="btn btn-warning buy-small">Buy</button>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 center-column">
+                    <div class="row">
+                        <img src="assets/images/size-icon.svg">
+                        <span><%= getBigSizeValues(pizza)[1] %></span>
+                    </div>
+                    <div class="row">
+                        <img class="apply-margin" src="assets/images/weight.svg">
+                        <span><%= getBigSizeValues(pizza)[0] %></span>
+                    </div>
+                    <div class="row">
+                        <span class="price"><%= getBigSizeValues(pizza)[2] %></span>
+                    </div>
+                    <div class="row">
+                        <span class="cnter">uah</span>
+                    </div>
+                    <div class="row">
+                        <button class="btn btn-warning buy-big">Buy</button>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <!-- Перед тим щоб показати кнопку необхідно переконатися, що піца має великий розмір -->
-        <button class="btn btn-primary buy-big">Купити велику</button>
     </div>
 </div>
