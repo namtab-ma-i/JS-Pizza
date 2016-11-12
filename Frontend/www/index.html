@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html>
-<head lang="en">
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <title>Pizza</title>
 
@@ -8,64 +8,122 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 
     <!-- LESS основний файл -->
-    <link rel="stylesheet/less" type="text/css" href="assets/less/main.less" />
+    <link rel="stylesheet/less" type="text/css" href="assets/less/index.less" />
     <!-- LESS JavaScript компілятор -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.5.3/less.min.js"></script>
 
 
 </head>
 <body>
-<div id="cart"></div>
-<div class="container">
-    <div class="row" id="pizza_list">
-        <div class="col-sm-6 col-md-4">
-            <div class="thumbnail pizza-card">
-                <img src="assets/images/pizza_1.jpg">
 
-                <div class="caption"><h3>Thumbnail label</h3>
-
-                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-
-                    <p>
-                        <a href="#" class="btn btn-primary">Button 2</a>
-                        <a href="#" class="btn btn-default">Button 1</a>
-                    </p>
-                </div>
+<nav class="navbar navbar-fixed-top">
+    <div class="menu-bar">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="pizza-top">
+                <a href="#">
+                    <span class="logo-pizza"> PIZZA </span>
+                    <span class="logo-kma"> KMA </span>
+                </a>
             </div>
         </div>
 
-        <div class="col-sm-6 col-md-4">
-            <div class="thumbnail pizza-card">
-                <img src="assets/images/pizza_2.jpg">
-
-                <div class="caption"><h3>Thumbnail label</h3>
-
-                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-
-                    <p>
-                        <a href="#" class="btn btn-primary">Button 3</a>
-                        <a href="#" class="btn btn-default">Button 4</a>
-                    </p>
-                </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav top-menu-elements">
+                <li class="tel">
+                    050 737 7 373
+                </li>
+                <li class="top-24">
+                    24/7 every day
+                </li>
+                <li class="free-shipping">
+                    Free delivery
+                </li>
+                <li><button href="#" class="btn btn-warning login-button">Log in</button></li>
+            </ul>
+            <div class="bottom-menu-elements">
+                <span>Pizza</span>
             </div>
-        </div>
-
-        <div class="col-sm-6 col-md-4">
-            <div class="thumbnail pizza-card">
-                <img src="assets/images/pizza_3.jpg">
-
-                <div class="caption"><h3>Thumbnail label</h3>
-
-                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-
-                    <p>
-                        <a href="#" class="btn btn-primary">Button 5</a>
-                        <a href="#" class="btn btn-default">Button 6</a>
-                    </p>
-                </div>
-            </div>
-        </div>
+        </div><!-- /.navbar-collapse -->
     </div>
+</nav>
+
+
+<div class="container-fluid row">
+        <div class="col-md-9 col-sm-6 container ">
+
+            <div class="badge">
+                <div class="title">
+                    This week<br>discount
+                </div>
+                <div class="percent">
+                    -20%
+                </div>
+            </div>
+
+
+
+            <div class="all-pizzas">
+                <div class="remains">
+                    <span class="title">All pizzas</span>
+                    <span class="count-all" id="all-pizzas-count">1</span>
+                </div>
+
+            </div>
+
+
+            <div class="pizzas-buttons">
+                <ul class="list">
+                    <li class="element"><button class="btn btn-warning button-in-list" id="all" active>All</button> </li>
+                    <li class="element"><button class="btn btn-warning button-in-list" id="meat">Meat</button> </li>
+                    <li class="element"><button class="btn btn-warning button-in-list" id="vegan">Vegan</button> </li>
+                    <li class="element"><button class="btn btn-warning button-in-list" id="ocean">Seafood</button> </li>
+                </ul>
+
+
+            </div>
+
+    <div class="row" id="pizza_list">
+
+
+    </div>
+</div>
+
+<div class="col-md-3 col-sm-6 container cart ">
+
+        <div class="remains">
+            <span class="title">Order</span>
+            <span class="count">1</span>
+            <span class="clear"><button class="clear-all-button" id="clear-all"> Clear </button></span>
+        </div>
+
+        <div class="goods" id="cart">
+
+
+        </div>
+
+            <div class="button-buy">
+
+                <div class="sum-row">
+                    <span class="total">Total:</span>
+                    <span class="total-num">123</span>
+                    <span class="currency">uah</span>
+                </div>
+
+                <button class="btn btn-warning btn-buy">Buy</button>
+            </div>
+
+</div>
+
+
+
 </div>
 
 <!-- jQuery JavaScript -->
@@ -74,7 +132,8 @@
 <!--Bootsrap JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
-<!--Own JavaScript -->
-<!--<script type="text/javascript"  src="assets/js/main.js"> </script>-->
+<script	type="text/javascript"		src="assets/js/main.js">	</script>
+
+
 </body>
 </html>
