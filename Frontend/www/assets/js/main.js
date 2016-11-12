@@ -98,7 +98,7 @@ var pizza_info = [
         }
     },
     {
-        id:17,
+        id:5,
         icon:'assets/images/pizza_3.jpg',
         title: "Маргарита",
         type: 'Вега піца',
@@ -111,10 +111,15 @@ var pizza_info = [
             weight: 370,
             size: 30,
             price: 89
+        },
+        big_size:{
+            weight: 700,
+            size: 40,
+            price: 299
         }
     },
     {
-        id:43,
+        id:6,
         icon:'assets/images/pizza_6.jpg',
         title: "Мікс смаків",
         type: 'М’ясна піца',
@@ -137,7 +142,7 @@ var pizza_info = [
         }
     },
     {
-        id:90,
+        id:7,
         icon:'assets/images/pizza_8.jpg',
         title: "Дольче Маре",
         type: 'Морська піца',
@@ -146,6 +151,11 @@ var pizza_info = [
             cheese: ['сир моцарелла'],
             additional: ['оливкова олія', 'вершки']
         },
+        small_size:{
+            weight: 370,
+            size: 30,
+            price: 99
+        },
         big_size:{
             weight: 845,
             size: 40,
@@ -153,7 +163,7 @@ var pizza_info = [
         }
     },
     {
-        id:6,
+        id:8,
         icon:'assets/images/pizza_4.jpg',
         title: "Россо Густо",
         type: 'Морська піца',
@@ -177,6 +187,16 @@ var pizza_info = [
 
 module.exports = pizza_info;
 },{}],2:[function(require,module,exports){
+var basil	=	require('basil.js');
+basil	=	new	basil();
+exports.get =	function(key)	{
+    return	basil.get(key);
+};
+exports.set =	function(key,	value)	{
+    return	basil.set(key,	value);
+};
+
+},{"basil.js":7}],3:[function(require,module,exports){
 /**
  * Created by chaika on 02.02.16.
  */
@@ -184,16 +204,18 @@ module.exports = pizza_info;
 var ejs = require('ejs');
 
 
-exports.PizzaMenu_OneItem = ejs.compile("<%\n\nfunction getIngredientsArray(pizza) {\n    //Отримує вміст піци\n    var content = pizza.content;\n    var result = [];\n\n    //Object.keys повертає масив ключів в об’єкті JavaScript\n\n    Object.keys(content).forEach(function(key){\n\n        //a.concat(b) створює спільний масив із масивів a та b\n        result = result.concat(content[key]);\n    });\n\n    return result;\n}\n\n   %>\n<div class=\"col-md-6 col-lg-4 pizza-card\">\n    <div class=\"thumbnail\">\n        <img class=\"pizza-icon\" src=\"<%= pizza.icon %>\" alt=\"Pizza\">\n\n        <% if(pizza.is_new) { %>\n        <span class=\"label label-danger\">Нова</span>\n        <% } else if(pizza.is_popular) {%>\n        <span class=\"label label-success\">Популярна</span>\n        <% } %>\n\n        <div class=\"caption\">\n            <span class=\"title\"><%= pizza.title %></span>\n            <div class=\"type\"><%= pizza.type %></div>\n            <div class=\"description\">\n                <%= getIngredientsArray(pizza).join(\", \") %>\n            </div>\n        </div>\n\n        <!-- Перед тим щоб показати кнопку необхідно переконатися, що піца має великий розмір -->\n        <button class=\"btn btn-primary buy-big\">Купити велику</button>\n    </div>\n</div>");
+exports.PizzaMenu_OneItem = ejs.compile("<%\n\nfunction getIngredientsArray(pizza) {\n    //Отримує вміст піци\n    var content = pizza.content;\n    var result = [];\n\n    //Object.keys повертає масив ключів в об’єкті JavaScript\n\n    Object.keys(content).forEach(function(key){\n\n        //a.concat(b) створює спільний масив із масивів a та b\n        result = result.concat(content[key]);\n    });\n\n    return result;\n}\n\n\nfunction getSmallSizeValues(pizza) {\n    //Отримує вміст піци\n    var content = pizza.small_size;\n    var result = [];\n\n    //Object.keys повертає масив ключів в об’єкті JavaScript\n\n    Object.keys(content).forEach(function(key){\n\n        //a.concat(b) створює спільний масив із масивів a та b\n        result = result.concat(content[key]);\n    });\n\n    return result;\n}\n\nfunction getBigSizeValues(pizza) {\n    //Отримує вміст піци\n    var content = pizza.big_size;\n    var result = [];\n\n    //Object.keys повертає масив ключів в об’єкті JavaScript\n\n    Object.keys(content).forEach(function(key){\n\n        //a.concat(b) створює спільний масив із масивів a та b\n        result = result.concat(content[key]);\n    });\n\n    return result;\n}\n\n\n   %>\n\n\n<div class=\"col-sm-6 col-md-4 col-lg-4\">\n    <div class=\"thumbnail pizza-card\">\n        <img src=\"<%= pizza.icon %>\">\n        <div class=\"caption\">\n            <h3><%= pizza.title %></h3>\n            <p class=\"type\"><%= pizza.type %></p>\n            <p><%= getIngredientsArray(pizza).join(\", \") %> </p>\n            <div class=\"row columns-on-label\">\n                <div class=\"col-md-6 col-sm-6 center-column\">\n                    <div class=\"row\">\n                        <img src=\"assets/images/size-icon.svg\">\n                        <span><%=  getSmallSizeValues(pizza)[1] %></span>\n                    </div>\n                    <div class=\"row\">\n                        <img class=\"apply-margin\" src=\"assets/images/weight.svg\">\n                        <span><%=  getSmallSizeValues(pizza)[0] %></span>\n                    </div>\n                    <div class=\"row\">\n                        <span class=\"price\"><%=  getSmallSizeValues(pizza)[2] %></span>\n                    </div>\n                    <div class=\"row\">\n                        <span class=\"cnter\">uah</span>\n                    </div>\n                    <div class=\"row\">\n                        <button class=\"btn btn-warning buy-small\">Buy</button>\n                    </div>\n                </div>\n                <div class=\"col-md-6 col-sm-6 center-column\">\n                    <div class=\"row\">\n                        <img src=\"assets/images/size-icon.svg\">\n                        <span><%= getBigSizeValues(pizza)[1] %></span>\n                    </div>\n                    <div class=\"row\">\n                        <img class=\"apply-margin\" src=\"assets/images/weight.svg\">\n                        <span><%= getBigSizeValues(pizza)[0] %></span>\n                    </div>\n                    <div class=\"row\">\n                        <span class=\"price\"><%= getBigSizeValues(pizza)[2] %></span>\n                    </div>\n                    <div class=\"row\">\n                        <span class=\"cnter\">uah</span>\n                    </div>\n                    <div class=\"row\">\n                        <button class=\"btn btn-warning buy-big\">Buy</button>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>");
 
-exports.PizzaCart_OneItem = ejs.compile("<div>\n    <%= pizza.title %> (<%= size %>)\n    <div>Ціна: <%= pizza[size].price %> грн.</div>\n    <div>\n        <button class=\"btn btn-danger minus\">-</button>\n        <span class=\"label label-default\"><%= quantity %></span>\n        <button class=\"btn btn-success plus\">+</button>\n    </div>\n</div>");
+exports.PizzaCart_OneItem = ejs.compile("<%\n\nfunction getSizeValues(pizza, size) {\n    //Отримує вміст піци\n    var content;\n    if(size == \"small_size\") {\n        content = pizza.small_size;\n    }else{\n        content = pizza.big_size;\n    }\n    var result = [];\n\n    //Object.keys повертає масив ключів в об’єкті JavaScript\n\n    Object.keys(content).forEach(function(key){\n\n        //a.concat(b) створює спільний масив із масивів a та b\n        result = result.concat(content[key]);\n    });\n\n    return result;\n}\n\n%>\n\n\n\n<div class=\"good\">\n    <img class=\"right-img\" src=\"<%= pizza.icon %>\">\n    <span class=\"good-title\"><%= pizza.title %></span>\n    <div class=\"details\">\n        <img src=\"assets/images/size-icon.svg\">\n        <span><%= getSizeValues(pizza, size)[1] %></span>\n        <img class=\"apply-margin\" src=\"assets/images/weight.svg\">\n        <span><%= getSizeValues(pizza, size)[0] %></span>\n    </div>\n    <div class=\"bottom-row-good\">\n        <div class=\"good-price\">\n            <span><%= getSizeValues(pizza, size)[2] %> грн.</span>\n        </div>\n        <div class=\"plus-minus\">\n            <button class=\"button-minus\" data-title=\"Decrease\">-</button>\n            <span class=\"count\"><%= quantity %></span>\n            <button class=\"button-plus\" data-title=\"Increase\">+</button>\n        </div>\n        <div class=\"bought-delete\">\n                    <span>\n                        <button class=\"button-delete\" data-title=\"Remove\">X</button>\n                    </span>\n        </div>\n    </div>\n</div>\n\n");
 
-},{"ejs":6}],3:[function(require,module,exports){
+},{"ejs":9}],4:[function(require,module,exports){
 /**
  * Created by chaika on 25.01.16.
  */
 
 $(function(){
+
+   // var fs = require('fs');
     //This code will execute when the page is ready
     var PizzaMenu = require('./pizza/PizzaMenu');
     var PizzaCart = require('./pizza/PizzaCart');
@@ -204,11 +226,12 @@ $(function(){
 
 
 });
-},{"./Pizza_List":1,"./pizza/PizzaCart":4,"./pizza/PizzaMenu":5}],4:[function(require,module,exports){
+},{"./Pizza_List":1,"./pizza/PizzaCart":5,"./pizza/PizzaMenu":6}],5:[function(require,module,exports){
 /**
  * Created by chaika on 02.02.16.
  */
 var Templates = require('../Templates');
+var Storage = require('../Storage');
 
 //Перелік розмірів піци
 var PizzaSize = {
@@ -221,16 +244,40 @@ var Cart = [];
 
 //HTML едемент куди будуть додаватися піци
 var $cart = $("#cart");
+var $label_count = $(".count");
+var $total_sum = $(".total-num");
+
+var $clear_all = $(".clear-all-button");
+
+var a = document.getElementById("clear-all");
+
+a.onclick = function () {
+    Cart = [];
+    Storage.set('cart', Cart);
+    updateCart();
+}
+
 
 function addToCart(pizza, size) {
     //Додавання однієї піци в кошик покупок
 
-    //Приклад реалізації, можна робити будь-яким іншим способом
-    Cart.push({
+    var node = {
         pizza: pizza,
         size: size,
         quantity: 1
+    };
+
+    var is = 0;
+    Cart.forEach(function(item){
+        if(item.pizza.id === pizza.id && item.size === size){
+            item.quantity +=1;
+            is = 1;
+        }
     });
+    if(!is) {
+        //Приклад реалізації, можна робити будь-яким іншим способом
+        Cart.push(node);
+    }
 
     //Оновити вміст кошика на сторінці
     updateCart();
@@ -238,8 +285,9 @@ function addToCart(pizza, size) {
 
 function removeFromCart(cart_item) {
     //Видалити піцу з кошика
-    //TODO: треба зробити
 
+    var i = parseInt(Cart.indexOf(cart_item));
+    Cart.splice(i,1);
     //Після видалення оновити відображення
     updateCart();
 }
@@ -247,9 +295,17 @@ function removeFromCart(cart_item) {
 function initialiseCart() {
     //Фукнція віпрацьвуватиме при завантаженні сторінки
     //Тут можна наприклад, зчитати вміст корзини який збережено в Local Storage то показати його
-    //TODO: ...
-
+    var cache = Storage.get('cart');
+    Cart = cache;
     updateCart();
+}
+
+function totalSum(){
+    var res=0;
+    Cart.forEach(function(v){
+        res += parseInt(v.pizza[v.size].price)*parseInt(v.quantity);
+    });
+    return res;
 }
 
 function getPizzaInCart() {
@@ -263,14 +319,18 @@ function updateCart() {
 
     //Очищаємо старі піци в кошику
     $cart.html("");
+    $label_count.text(Cart.length);
+    $total_sum.text(totalSum);
 
     //Онволення однієї піци
     function showOnePizzaInCart(cart_item) {
-        var html_code = Templates.PizzaCart_OneItem(cart_item);
+        var html_code = Templates.PizzaCart_OneItem({pizza : cart_item.pizza, size: cart_item.size, quantity: cart_item.quantity});
 
         var $node = $(html_code);
 
-        $node.find(".plus").click(function(){
+       // $node.find(".good-price").text(cart_item.quantity * cart_item.pizza[cart_item.size].price);
+
+        $node.find(".button-plus").click(function(){
             //Збільшуємо кількість замовлених піц
             cart_item.quantity += 1;
 
@@ -278,10 +338,25 @@ function updateCart() {
             updateCart();
         });
 
+        $node.find(".button-minus").click(function(){
+            cart_item.quantity -= 1;
+
+            if(cart_item.quantity<=0) removeFromCart(cart_item);
+
+            updateCart();
+        });
+
+        $node.find(".button-delete").click(function(){
+            removeFromCart(cart_item);
+
+            updateCart();
+        });
+
         $cart.append($node);
     }
 
     Cart.forEach(showOnePizzaInCart);
+    Storage.set('cart', Cart);
 
 }
 
@@ -292,7 +367,7 @@ exports.getPizzaInCart = getPizzaInCart;
 exports.initialiseCart = initialiseCart;
 
 exports.PizzaSize = PizzaSize;
-},{"../Templates":2}],5:[function(require,module,exports){
+},{"../Storage":2,"../Templates":3}],6:[function(require,module,exports){
 /**
  * Created by chaika on 02.02.16.
  */
@@ -302,6 +377,38 @@ var Pizza_List = require('../Pizza_List');
 
 //HTML едемент куди будуть додаватися піци
 var $pizza_list = $("#pizza_list");
+
+var all = document.getElementById("all");
+
+all.onclick = function () {
+  //  alert("All clicked");
+    filterPizza('all');
+}
+
+var meat = document.getElementById("meat");
+
+meat.onclick = function () {
+   // alert("meat clicked");
+    filterPizza('meat');
+}
+
+var vegan = document.getElementById("vegan");
+
+vegan.onclick = function () {
+   // alert("vegan clicked");
+    filterPizza('vegan');
+}
+
+var ocean = document.getElementById("ocean");
+
+ocean.onclick = function () {
+   // alert("ocean clicked");
+    filterPizza('ocean');
+}
+
+
+
+
 
 function showPizzaList(list) {
     //Очищаємо старі піци в кошику
@@ -324,31 +431,438 @@ function showPizzaList(list) {
     }
 
     list.forEach(showOnePizza);
+    $(".count-all").text(pizza_shown.length);
 }
 
 function filterPizza(filter) {
     //Масив куди потраплять піци які треба показати
     var pizza_shown = [];
 
-    Pizza_List.forEach(function(pizza){
-        //Якщо піка відповідає фільтру
-        //pizza_shown.push(pizza);
-
-        //TODO: зробити фільтри
-    });
-
+    if (filter === 'all') {
+        Pizza_List.forEach(function (pizza) {
+            pizza_shown.push(pizza);
+        });
+    }
+    else if (filter == 'vegan') {
+        Pizza_List.forEach(function (pizza) {
+            //Якщо піка відповідає фільтру
+            if (!pizza.content['meat'] && !pizza.content['ocean']) {
+                pizza_shown.push(pizza);
+            }
+        });
+    } else {
+        Pizza_List.forEach(function (pizza) {
+            //Якщо піка відповідає фільтру
+            if (pizza.content[filter]) {
+                pizza_shown.push(pizza);
+            }
+        });
+    }
     //Показати відфільтровані піци
+    var $label_count = $(".count-all");
+    $label_count.text(pizza_shown.length);
     showPizzaList(pizza_shown);
+
 }
 
 function initialiseMenu() {
     //Показуємо усі піци
-    showPizzaList(Pizza_List)
+    filterPizza('all');
 }
 
 exports.filterPizza = filterPizza;
 exports.initialiseMenu = initialiseMenu;
-},{"../Pizza_List":1,"../Templates":2,"./PizzaCart":4}],6:[function(require,module,exports){
+},{"../Pizza_List":1,"../Templates":3,"./PizzaCart":5}],7:[function(require,module,exports){
+(function () {
+	// Basil
+	var Basil = function (options) {
+		return Basil.utils.extend({}, Basil.plugins, new Basil.Storage().init(options));
+	};
+
+	// Version
+	Basil.version = '0.4.4';
+
+	// Utils
+	Basil.utils = {
+		extend: function () {
+			var destination = typeof arguments[0] === 'object' ? arguments[0] : {};
+			for (var i = 1; i < arguments.length; i++) {
+				if (arguments[i] && typeof arguments[i] === 'object')
+					for (var property in arguments[i])
+						destination[property] = arguments[i][property];
+			}
+			return destination;
+		},
+		each: function (obj, fnIterator, context) {
+			if (this.isArray(obj)) {
+				for (var i = 0; i < obj.length; i++)
+					if (fnIterator.call(context, obj[i], i) === false) return;
+			} else if (obj) {
+				for (var key in obj)
+					if (fnIterator.call(context, obj[key], key) === false) return;
+			}
+		},
+		tryEach: function (obj, fnIterator, fnError, context) {
+			this.each(obj, function (value, key) {
+				try {
+					return fnIterator.call(context, value, key);
+				} catch (error) {
+					if (this.isFunction(fnError)) {
+						try {
+							fnError.call(context, value, key, error);
+						} catch (error) {}
+					}
+				}
+			}, this);
+		},
+		registerPlugin: function (methods) {
+			Basil.plugins = this.extend(methods, Basil.plugins);
+		},
+		getTypeOf: function (obj) {
+			if (typeof obj === 'undefined' || obj === null)
+				return '' + obj;
+			return Object.prototype.toString.call(obj).replace(/^\[object\s(.*)\]$/, function ($0, $1) { return $1.toLowerCase(); });
+		}
+	};
+  	// Add some isType methods: isArguments, isBoolean, isFunction, isString, isArray, isNumber, isDate, isRegExp, isUndefined, isNull.
+	var types = ['Arguments', 'Boolean', 'Function', 'String', 'Array', 'Number', 'Date', 'RegExp', 'Undefined', 'Null'];
+	for (var i = 0; i < types.length; i++) {
+		Basil.utils['is' + types[i]] = (function (type) {
+			return function (obj) {
+				return Basil.utils.getTypeOf(obj) === type.toLowerCase();
+			};
+		})(types[i]);
+	}
+
+	// Plugins
+	Basil.plugins = {};
+
+	// Options
+	Basil.options = Basil.utils.extend({
+		namespace: 'b45i1',
+		storages: ['local', 'cookie', 'session', 'memory'],
+		expireDays: 365
+	}, window.Basil ? window.Basil.options : {});
+
+	// Storage
+	Basil.Storage = function () {
+		var _salt = 'b45i1' + (Math.random() + 1)
+				.toString(36)
+				.substring(7),
+			_storages = {},
+			_isValidKey = function (key) {
+				var type = Basil.utils.getTypeOf(key);
+				return (type === 'string' && key) || type === 'number' || type === 'boolean';
+			},
+			_toStoragesArray = function (storages) {
+				if (Basil.utils.isArray(storages))
+					return storages;
+				return Basil.utils.isString(storages) ? [storages] : [];
+			},
+			_toStoredKey = function (namespace, path) {
+				var key = '';
+				if (_isValidKey(path)) {
+					key += path;
+				} else if (Basil.utils.isArray(path)) {
+					path = Basil.utils.isFunction(path.filter) ? path.filter(_isValidKey) : path;
+					key = path.join('.');
+				}
+				return key && _isValidKey(namespace) ? namespace + '.' + key : key;
+ 			},
+			_toKeyName = function (namespace, key) {
+				if (!_isValidKey(namespace))
+					return key;
+				return key.replace(new RegExp('^' + namespace + '.'), '');
+			},
+			_toStoredValue = function (value) {
+				return JSON.stringify(value);
+			},
+			_fromStoredValue = function (value) {
+				return value ? JSON.parse(value) : null;
+			};
+
+		// HTML5 web storage interface
+		var webStorageInterface = {
+			engine: null,
+			check: function () {
+				try {
+					window[this.engine].setItem(_salt, true);
+					window[this.engine].removeItem(_salt);
+				} catch (e) {
+					return false;
+				}
+				return true;
+			},
+			set: function (key, value, options) {
+				if (!key)
+					throw Error('invalid key');
+				window[this.engine].setItem(key, value);
+			},
+			get: function (key) {
+				return window[this.engine].getItem(key);
+			},
+			remove: function (key) {
+				window[this.engine].removeItem(key);
+			},
+			reset: function (namespace) {
+				for (var i = 0, key; i < window[this.engine].length; i++) {
+					key = window[this.engine].key(i);
+					if (!namespace || key.indexOf(namespace) === 0) {
+						this.remove(key);
+						i--;
+					}
+				}
+			},
+			keys: function (namespace) {
+				var keys = [];
+				for (var i = 0, key; i < window[this.engine].length; i++) {
+					key = window[this.engine].key(i);
+					if (!namespace || key.indexOf(namespace) === 0)
+						keys.push(_toKeyName(namespace, key));
+				}
+				return keys;
+			}
+		};
+
+		// local storage
+		_storages.local = Basil.utils.extend({}, webStorageInterface, {
+			engine: 'localStorage'
+		});
+		// session storage
+		_storages.session = Basil.utils.extend({}, webStorageInterface, {
+			engine: 'sessionStorage'
+		});
+
+		// memory storage
+		_storages.memory = {
+			_hash: {},
+			check: function () {
+				return true;
+			},
+			set: function (key, value, options) {
+				if (!key)
+					throw Error('invalid key');
+				this._hash[key] = value;
+			},
+			get: function (key) {
+				return this._hash[key] || null;
+			},
+			remove: function (key) {
+				delete this._hash[key];
+			},
+			reset: function (namespace) {
+				for (var key in this._hash) {
+					if (!namespace || key.indexOf(namespace) === 0)
+						this.remove(key);
+				}
+			},
+			keys: function (namespace) {
+				var keys = [];
+				for (var key in this._hash)
+					if (!namespace || key.indexOf(namespace) === 0)
+						keys.push(_toKeyName(namespace, key));
+				return keys;
+			}
+		};
+
+		// cookie storage
+		_storages.cookie = {
+			check: function () {
+				if (!navigator.cookieEnabled)
+					return false;
+				if (window.self !== window.top) {
+					// we need to check third-party cookies;
+					var cookie = 'thirdparty.check=' + Math.round(Math.random() * 1000);
+					document.cookie = cookie + '; path=/';
+					return document.cookie.indexOf(cookie) !== -1;
+				}
+				return true;
+			},
+			set: function (key, value, options) {
+				if (!this.check())
+					throw Error('cookies are disabled');
+				options = options || {};
+				if (!key)
+					throw Error('invalid key');
+				var cookie = encodeURIComponent(key) + '=' + encodeURIComponent(value);
+				// handle expiration days
+				if (options.expireDays) {
+					var date = new Date();
+					date.setTime(date.getTime() + (options.expireDays * 24 * 60 * 60 * 1000));
+					cookie += '; expires=' + date.toGMTString();
+				}
+				// handle domain
+				if (options.domain && options.domain !== document.domain) {
+					var _domain = options.domain.replace(/^\./, '');
+					if (document.domain.indexOf(_domain) === -1 || _domain.split('.').length <= 1)
+						throw Error('invalid domain');
+					cookie += '; domain=' + options.domain;
+				}
+				// handle secure
+				if (options.secure === true) {
+					cookie += '; secure';
+				}
+				document.cookie = cookie + '; path=/';
+			},
+			get: function (key) {
+				if (!this.check())
+					throw Error('cookies are disabled');
+				var encodedKey = encodeURIComponent(key);
+				var cookies = document.cookie ? document.cookie.split(';') : [];
+				// retrieve last updated cookie first
+				for (var i = cookies.length - 1, cookie; i >= 0; i--) {
+					cookie = cookies[i].replace(/^\s*/, '');
+					if (cookie.indexOf(encodedKey + '=') === 0)
+						return decodeURIComponent(cookie.substring(encodedKey.length + 1, cookie.length));
+				}
+				return null;
+			},
+			remove: function (key) {
+				// remove cookie from main domain
+				this.set(key, '', { expireDays: -1 });
+				// remove cookie from upper domains
+				var domainParts = document.domain.split('.');
+				for (var i = domainParts.length; i >= 0; i--) {
+					this.set(key, '', { expireDays: -1, domain: '.' + domainParts.slice(- i).join('.') });
+				}
+			},
+			reset: function (namespace) {
+				var cookies = document.cookie ? document.cookie.split(';') : [];
+				for (var i = 0, cookie, key; i < cookies.length; i++) {
+					cookie = cookies[i].replace(/^\s*/, '');
+					key = cookie.substr(0, cookie.indexOf('='));
+					if (!namespace || key.indexOf(namespace) === 0)
+						this.remove(key);
+				}
+			},
+			keys: function (namespace) {
+				if (!this.check())
+					throw Error('cookies are disabled');
+				var keys = [],
+					cookies = document.cookie ? document.cookie.split(';') : [];
+				for (var i = 0, cookie, key; i < cookies.length; i++) {
+					cookie = cookies[i].replace(/^\s*/, '');
+					key = decodeURIComponent(cookie.substr(0, cookie.indexOf('=')));
+					if (!namespace || key.indexOf(namespace) === 0)
+						keys.push(_toKeyName(namespace, key));
+				}
+				return keys;
+			}
+		};
+
+		return {
+			init: function (options) {
+				this.setOptions(options);
+				return this;
+			},
+			setOptions: function (options) {
+				this.options = Basil.utils.extend({}, this.options || Basil.options, options);
+			},
+			support: function (storage) {
+				return _storages.hasOwnProperty(storage);
+			},
+			check: function (storage) {
+				if (this.support(storage))
+					return _storages[storage].check();
+				return false;
+			},
+			set: function (key, value, options) {
+				options = Basil.utils.extend({}, this.options, options);
+				if (!(key = _toStoredKey(options.namespace, key)))
+					return false;
+				value = options.raw === true ? value : _toStoredValue(value);
+				var where = null;
+				// try to set key/value in first available storage
+				Basil.utils.tryEach(_toStoragesArray(options.storages), function (storage, index) {
+					_storages[storage].set(key, value, options);
+					where = storage;
+					return false; // break;
+				}, null, this);
+				if (!where) {
+					// key has not been set anywhere
+					return false;
+				}
+				// remove key from all other storages
+				Basil.utils.tryEach(_toStoragesArray(options.storages), function (storage, index) {
+					if (storage !== where)
+						_storages[storage].remove(key);
+				}, null, this);
+				return true;
+			},
+			get: function (key, options) {
+				options = Basil.utils.extend({}, this.options, options);
+				if (!(key = _toStoredKey(options.namespace, key)))
+					return null;
+				var value = null;
+				Basil.utils.tryEach(_toStoragesArray(options.storages), function (storage, index) {
+					if (value !== null)
+						return false; // break if a value has already been found.
+					value = _storages[storage].get(key, options) || null;
+					value = options.raw === true ? value : _fromStoredValue(value);
+				}, function (storage, index, error) {
+					value = null;
+				}, this);
+				return value;
+			},
+			remove: function (key, options) {
+				options = Basil.utils.extend({}, this.options, options);
+				if (!(key = _toStoredKey(options.namespace, key)))
+					return;
+				Basil.utils.tryEach(_toStoragesArray(options.storages), function (storage) {
+					_storages[storage].remove(key);
+				}, null, this);
+			},
+			reset: function (options) {
+				options = Basil.utils.extend({}, this.options, options);
+				Basil.utils.tryEach(_toStoragesArray(options.storages), function (storage) {
+					_storages[storage].reset(options.namespace);
+				}, null, this);
+			},
+			keys: function (options) {
+				options = options || {};
+				var keys = [];
+				for (var key in this.keysMap(options))
+					keys.push(key);
+				return keys;
+			},
+			keysMap: function (options) {
+				options = Basil.utils.extend({}, this.options, options);
+				var map = {};
+				Basil.utils.tryEach(_toStoragesArray(options.storages), function (storage) {
+					Basil.utils.each(_storages[storage].keys(options.namespace), function (key) {
+						map[key] = Basil.utils.isArray(map[key]) ? map[key] : [];
+						map[key].push(storage);
+					}, this);
+				}, null, this);
+				return map;
+			}
+		};
+	};
+
+	// Access to native storages, without namespace or basil value decoration
+	Basil.memory = new Basil.Storage().init({ storages: 'memory', namespace: null, raw: true });
+	Basil.cookie = new Basil.Storage().init({ storages: 'cookie', namespace: null, raw: true });
+	Basil.localStorage = new Basil.Storage().init({ storages: 'local', namespace: null, raw: true });
+	Basil.sessionStorage = new Basil.Storage().init({ storages: 'session', namespace: null, raw: true });
+
+	// browser export
+	window.Basil = Basil;
+
+	// AMD export
+	if (typeof define === 'function' && define.amd) {
+		define(function() {
+			return Basil;
+		});
+	// commonjs export
+	} else if (typeof module !== 'undefined' && module.exports) {
+		module.exports = Basil;
+	}
+
+})();
+
+},{}],8:[function(require,module,exports){
+
+},{}],9:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -395,19 +909,20 @@ exports.initialiseMenu = initialiseMenu;
  * @public
  */
 
-var fs = require('fs')
-  , utils = require('./utils')
-  , scopeOptionWarned = false
-  , _VERSION_STRING = require('../package.json').version
-  , _DEFAULT_DELIMITER = '%'
-  , _DEFAULT_LOCALS_NAME = 'locals'
-  , _REGEX_STRING = '(<%%|<%=|<%-|<%_|<%#|<%|%>|-%>|_%>)'
-  , _OPTS = [ 'cache', 'filename', 'delimiter', 'scope', 'context'
-            , 'debug', 'compileDebug', 'client', '_with', 'rmWhitespace'
-            , 'strict', 'localsName'
-            ]
-  , _TRAILING_SEMCOL = /;\s*$/
-  , _BOM = /^\uFEFF/;
+var fs = require('fs');
+var path = require('path');
+var utils = require('./utils');
+
+var scopeOptionWarned = false;
+var _VERSION_STRING = require('../package.json').version;
+var _DEFAULT_DELIMITER = '%';
+var _DEFAULT_LOCALS_NAME = 'locals';
+var _REGEX_STRING = '(<%%|%%>|<%=|<%-|<%_|<%#|<%|%>|-%>|_%>)';
+var _OPTS = [ 'cache', 'filename', 'delimiter', 'scope', 'context',
+        'debug', 'compileDebug', 'client', '_with', 'root', 'rmWhitespace',
+        'strict', 'localsName'];
+var _TRAILING_SEMCOL = /;\s*$/;
+var _BOM = /^\uFEFF/;
 
 /**
  * EJS template function cache. This can be a LRU object from lru-cache NPM
@@ -435,23 +950,43 @@ exports.localsName = _DEFAULT_LOCALS_NAME;
  * Get the path to the included file from the parent file path and the
  * specified path.
  *
- * @param {String} name     specified path
- * @param {String} filename parent file path
+ * @param {String}  name     specified path
+ * @param {String}  filename parent file path
+ * @param {Boolean} isDir    parent file path whether is directory
  * @return {String}
  */
-
-exports.resolveInclude = function(name, filename) {
-  var path = require('path')
-    , dirname = path.dirname
-    , extname = path.extname
-    , resolve = path.resolve
-    , includePath = resolve(dirname(filename), name)
-    , ext = extname(name);
+exports.resolveInclude = function(name, filename, isDir) {
+  var dirname = path.dirname;
+  var extname = path.extname;
+  var resolve = path.resolve;
+  var includePath = resolve(isDir ? filename : dirname(filename), name);
+  var ext = extname(name);
   if (!ext) {
     includePath += '.ejs';
   }
   return includePath;
 };
+
+/**
+ * Get the path to the included file by Options
+ * 
+ * @param  {String}  path    specified path
+ * @param  {Options} options compilation options
+ * @return {String}
+ */
+function getIncludePath(path, options){
+  var includePath;
+  if (path.charAt(0) == '/') {
+    includePath = exports.resolveInclude(path.replace(/^\/*/,''), options.root || '/', true);
+  }
+  else {
+    if (!options.filename) {
+      throw new Error('`include` use relative path requires the \'filename\' option.');
+    }
+    includePath = exports.resolveInclude(path, options.filename);  
+  }
+  return includePath;
+}
 
 /**
  * Get the template from a string or a file, either compiled on-the-fly or
@@ -472,35 +1007,35 @@ exports.resolveInclude = function(name, filename) {
  */
 
 function handleCache(options, template) {
-  var fn
-    , path = options.filename
-    , hasTemplate = arguments.length > 1;
+  var func;
+  var filename = options.filename;
+  var hasTemplate = arguments.length > 1;
 
   if (options.cache) {
-    if (!path) {
+    if (!filename) {
       throw new Error('cache option requires a filename');
     }
-    fn = exports.cache.get(path);
-    if (fn) {
-      return fn;
+    func = exports.cache.get(filename);
+    if (func) {
+      return func;
     }
     if (!hasTemplate) {
-      template = fs.readFileSync(path).toString().replace(_BOM, '');
+      template = fs.readFileSync(filename).toString().replace(_BOM, '');
     }
   }
   else if (!hasTemplate) {
     // istanbul ignore if: should not happen at all
-    if (!path) {
+    if (!filename) {
       throw new Error('Internal EJS error: no file name or template '
                     + 'provided');
     }
-    template = fs.readFileSync(path).toString().replace(_BOM, '');
+    template = fs.readFileSync(filename).toString().replace(_BOM, '');
   }
-  fn = exports.compile(template, options);
+  func = exports.compile(template, options);
   if (options.cache) {
-    exports.cache.set(path, fn);
+    exports.cache.set(filename, func);
   }
-  return fn;
+  return func;
 }
 
 /**
@@ -518,10 +1053,7 @@ function handleCache(options, template) {
 
 function includeFile(path, options) {
   var opts = utils.shallowCopy({}, options);
-  if (!opts.filename) {
-    throw new Error('`include` requires the \'filename\' option.');
-  }
-  opts.filename = exports.resolveInclude(path, opts.filename);
+  opts.filename = getIncludePath(path, opts);
   return handleCache(opts);
 }
 
@@ -531,24 +1063,24 @@ function includeFile(path, options) {
  * @memberof module:ejs-internal
  * @param {String}  path    path for the specified file
  * @param {Options} options compilation options
- * @return {String}
+ * @return {Object}
  * @static
  */
 
 function includeSource(path, options) {
-  var opts = utils.shallowCopy({}, options)
-    , includePath
-    , template;
-  if (!opts.filename) {
-    throw new Error('`include` requires the \'filename\' option.');
-  }
-  includePath = exports.resolveInclude(path, opts.filename);
+  var opts = utils.shallowCopy({}, options);
+  var includePath;
+  var template;
+  includePath = getIncludePath(path,opts);
   template = fs.readFileSync(includePath).toString().replace(_BOM, '');
-
   opts.filename = includePath;
   var templ = new Template(template, opts);
   templ.generateSource();
-  return templ.source;
+  return {
+    source: templ.source,
+    filename: includePath,
+    template: template
+  };
 }
 
 /**
@@ -565,10 +1097,9 @@ function includeSource(path, options) {
  */
 
 function rethrow(err, str, filename, lineno){
-  var lines = str.split('\n')
-    , start = Math.max(lineno - 3, 0)
-    , end = Math.min(lines.length, lineno + 3);
-
+  var lines = str.split('\n');
+  var start = Math.max(lineno - 3, 0);
+  var end = Math.min(lines.length, lineno + 3);
   // Error context
   var context = lines.slice(start, end).map(function (line, i){
     var curr = i + start + 1;
@@ -653,10 +1184,9 @@ exports.compile = function compile(template, opts) {
  * @public
  */
 
-exports.render = function (template, data, opts) {
-  data = data || {};
-  opts = opts || {};
-  var fn;
+exports.render = function (template, d, o) {
+  var data = d || {};
+  var opts = o || {};
 
   // No options object -- if there are optiony names
   // in the data, copy them to options
@@ -681,12 +1211,12 @@ exports.render = function (template, data, opts) {
  */
 
 exports.renderFile = function () {
-  var args = Array.prototype.slice.call(arguments)
-    , path = args.shift()
-    , cb = args.pop()
-    , data = args.shift() || {}
-    , opts = args.pop() || {}
-    , result;
+  var args = Array.prototype.slice.call(arguments);
+  var filename = args.shift();
+  var cb = args.pop();
+  var data = args.shift() || {};
+  var opts = args.pop() || {};
+  var result;
 
   // Don't pollute passed in opts obj with new vals
   opts = utils.shallowCopy({}, opts);
@@ -703,7 +1233,7 @@ exports.renderFile = function () {
       cpOptsInData(data, opts);
     }
   }
-  opts.filename = path;
+  opts.filename = filename;
 
   try {
     result = handleCache(opts)(data);
@@ -742,6 +1272,7 @@ function Template(text, opts) {
   options.context = opts.context;
   options.cache = opts.cache || false;
   options.rmWhitespace = opts.rmWhitespace;
+  options.root = opts.root;
   options.localsName = opts.localsName || exports.localsName || _DEFAULT_LOCALS_NAME;
 
   if (options.strict) {
@@ -757,39 +1288,28 @@ function Template(text, opts) {
 }
 
 Template.modes = {
-  EVAL: 'eval'
-, ESCAPED: 'escaped'
-, RAW: 'raw'
-, COMMENT: 'comment'
-, LITERAL: 'literal'
+  EVAL: 'eval',
+  ESCAPED: 'escaped',
+  RAW: 'raw',
+  COMMENT: 'comment',
+  LITERAL: 'literal'
 };
 
 Template.prototype = {
   createRegex: function () {
-    var str = _REGEX_STRING
-      , delim = utils.escapeRegExpChars(this.opts.delimiter);
+    var str = _REGEX_STRING;
+    var delim = utils.escapeRegExpChars(this.opts.delimiter);
     str = str.replace(/%/g, delim);
     return new RegExp(str);
-  }
+  },
 
-, compile: function () {
-    var src
-      , fn
-      , opts = this.opts
-      , prepended = ''
-      , appended = ''
-      , escape = opts.escapeFunction;
-
-    if (opts.rmWhitespace) {
-      // Have to use two separate replace here as `^` and `$` operators don't
-      // work well with `\r`.
-      this.templateText =
-        this.templateText.replace(/\r/g, '').replace(/^\s+|\s+$/gm, '');
-    }
-
-    // Slurp spaces and tabs before <%_ and after _%>
-    this.templateText =
-      this.templateText.replace(/[ \t]*<%_/gm, '<%_').replace(/_%>[ \t]*/gm, '_%>');
+  compile: function () {
+    var src;
+    var fn;
+    var opts = this.opts;
+    var prepended = '';
+    var appended = '';
+    var escape = opts.escapeFunction;
 
     if (!this.source) {
       this.generateSource();
@@ -866,20 +1386,34 @@ Template.prototype = {
     };
     returnedFn.dependencies = this.dependencies;
     return returnedFn;
-  }
+  },
 
-, generateSource: function () {
-    var self = this
-      , matches = this.parseTemplateText()
-      , d = this.opts.delimiter;
+  generateSource: function () {
+    var opts = this.opts;
+
+    if (opts.rmWhitespace) {
+      // Have to use two separate replace here as `^` and `$` operators don't
+      // work well with `\r`.
+      this.templateText =
+        this.templateText.replace(/\r/g, '').replace(/^\s+|\s+$/gm, '');
+    }
+
+    // Slurp spaces and tabs before <%_ and after _%>
+    this.templateText =
+      this.templateText.replace(/[ \t]*<%_/gm, '<%_').replace(/_%>[ \t]*/gm, '_%>');
+
+    var self = this;
+    var matches = this.parseTemplateText();
+    var d = this.opts.delimiter;
 
     if (matches && matches.length) {
       matches.forEach(function (line, index) {
-        var opening
-          , closing
-          , include
-          , includeOpts
-          , includeSrc;
+        var opening;
+        var closing;
+        var include;
+        var includeOpts;
+        var includeObj;
+        var includeSrc;
         // If this is an opening tag, check for closing tags
         // FIXME: May end up with some false positives here
         // Better to store modes as k/v with '<' + delimiter as key
@@ -897,9 +1431,23 @@ Template.prototype = {
           // Must be in EVAL or RAW mode
           if (opening && (opening == '<' + d || opening == '<' + d + '-' || opening == '<' + d + '_')) {
             includeOpts = utils.shallowCopy({}, self.opts);
-            includeSrc = includeSource(include[1], includeOpts);
-            includeSrc = '    ; (function(){' + '\n' + includeSrc +
-                '    ; })()' + '\n';
+            includeObj = includeSource(include[1], includeOpts);
+            if (self.opts.compileDebug) {
+              includeSrc =
+                  '    ; (function(){' + '\n'
+                  + '      var __line = 1' + '\n'
+                  + '      , __lines = ' + JSON.stringify(includeObj.template) + '\n'
+                  + '      , __filename = ' + JSON.stringify(includeObj.filename) + ';' + '\n'
+                  + '      try {' + '\n'
+                  + includeObj.source
+                  + '      } catch (e) {' + '\n'
+                  + '        rethrow(e, __lines, __filename, __line);' + '\n'
+                  + '      }' + '\n'
+                  + '    ; }).call(this)' + '\n';
+            }else{
+              includeSrc = '    ; (function(){' + '\n' + includeObj.source +
+                  '    ; }).call(this)' + '\n';
+            }
             self.source += includeSrc;
             self.dependencies.push(exports.resolveInclude(include[1],
                 includeOpts.filename));
@@ -910,19 +1458,17 @@ Template.prototype = {
       });
     }
 
-  }
+  },
 
-, parseTemplateText: function () {
-    var str = this.templateText
-      , pat = this.regex
-      , result = pat.exec(str)
-      , arr = []
-      , firstPos
-      , lastPos;
+  parseTemplateText: function () {
+    var str = this.templateText;
+    var pat = this.regex;
+    var result = pat.exec(str);
+    var arr = [];
+    var firstPos;
 
     while (result) {
       firstPos = result.index;
-      lastPos = pat.lastIndex;
 
       if (firstPos !== 0) {
         arr.push(str.substring(0, firstPos));
@@ -939,12 +1485,12 @@ Template.prototype = {
     }
 
     return arr;
-  }
+  },
 
-, scanLine: function (line) {
-    var self = this
-      , d = this.opts.delimiter
-      , newLineCount = 0;
+  scanLine: function (line) {
+    var self = this;
+    var d = this.opts.delimiter;
+    var newLineCount = 0;
 
     function _addOutput() {
       if (self.truncate) {
@@ -953,7 +1499,7 @@ Template.prototype = {
         // after the tag that the truncation mode replaces
         // Handle Win / Unix / old Mac linebreaks -- do the \r\n
         // combo first in the regex-or
-        line = line.replace(/^(?:\r\n|\r|\n)/, '')
+        line = line.replace(/^(?:\r\n|\r|\n)/, '');
         self.truncate = false;
       }
       else if (self.opts.rmWhitespace) {
@@ -998,6 +1544,10 @@ Template.prototype = {
       case '<' + d + d:
         this.mode = Template.modes.LITERAL;
         this.source += '    ; __append("' + line.replace('<' + d + d, '<' + d) + '")' + '\n';
+        break;
+      case d + d + '>':
+        this.mode = Template.modes.LITERAL;
+        this.source += '    ; __append("' + line.replace(d + d + '>', d + '>') + '")' + '\n';
         break;
       case d + '>':
       case '-' + d + '>':
@@ -1059,6 +1609,20 @@ Template.prototype = {
 };
 
 /**
+ * Escape characters reserved in XML.
+ *
+ * This is simply an export of {@link module:utils.escapeXML}.
+ *
+ * If `markup` is `undefined` or `null`, the empty string is returned.
+ *
+ * @param {String} markup Input string
+ * @return {String} Escaped string
+ * @public
+ * @func
+ * */
+exports.escapeXML = utils.escapeXML;
+
+/**
  * Express.js support.
  *
  * This is an alias for {@link module:ejs.renderFile}, in order to support
@@ -1072,14 +1636,14 @@ exports.__express = exports.renderFile;
 // Add require support
 /* istanbul ignore else */
 if (require.extensions) {
-  require.extensions['.ejs'] = function (module, filename) {
-    filename = filename || /* istanbul ignore next */ module.filename;
+  require.extensions['.ejs'] = function (module, flnm) {
+    var filename = flnm || /* istanbul ignore next */ module.filename;
     var options = {
-          filename: filename
-        , client: true
-        }
-      , template = fs.readFileSync(filename).toString()
-      , fn = exports.compile(template, options);
+          filename: filename,
+          client: true
+        };
+    var template = fs.readFileSync(filename).toString();
+    var fn = exports.compile(template, options);
     module._compile('module.exports = ' + fn.toString() + ';', filename);
   };
 }
@@ -1099,7 +1663,7 @@ if (typeof window != 'undefined') {
   window.ejs = exports;
 }
 
-},{"../package.json":8,"./utils":7,"fs":9,"path":10}],7:[function(require,module,exports){
+},{"../package.json":11,"./utils":10,"fs":8,"path":12}],10:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -1242,20 +1806,61 @@ exports.cache = {
 };
 
 
-},{}],8:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 module.exports={
-  "name": "ejs",
-  "description": "Embedded JavaScript templates",
-  "keywords": [
-    "template",
-    "engine",
-    "ejs"
+  "_args": [
+    [
+      {
+        "raw": "ejs@^2.4.1",
+        "scope": null,
+        "escapedName": "ejs",
+        "name": "ejs",
+        "rawSpec": "^2.4.1",
+        "spec": ">=2.4.1 <3.0.0",
+        "type": "range"
+      },
+      "D:\\KMA\\2grade\\WebStorm\\Pizza"
+    ]
   ],
-  "version": "2.4.1",
+  "_from": "ejs@>=2.4.1 <3.0.0",
+  "_id": "ejs@2.5.2",
+  "_inCache": true,
+  "_location": "/ejs",
+  "_nodeVersion": "4.2.2",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/ejs-2.5.2.tgz_1473259584869_0.9678213631268591"
+  },
+  "_npmUser": {
+    "name": "mde",
+    "email": "mde@fleegix.org"
+  },
+  "_npmVersion": "2.14.7",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "ejs@^2.4.1",
+    "scope": null,
+    "escapedName": "ejs",
+    "name": "ejs",
+    "rawSpec": "^2.4.1",
+    "spec": ">=2.4.1 <3.0.0",
+    "type": "range"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.2.tgz",
+  "_shasum": "21444ba09386f0c65b6eafb96a3d51bcb3be80d1",
+  "_shrinkwrap": null,
+  "_spec": "ejs@^2.4.1",
+  "_where": "D:\\KMA\\2grade\\WebStorm\\Pizza",
   "author": {
     "name": "Matthew Eernisse",
     "email": "mde@fleegix.org",
     "url": "http://fleegix.org"
+  },
+  "bugs": {
+    "url": "https://github.com/mde/ejs/issues"
   },
   "contributors": [
     {
@@ -1264,46 +1869,35 @@ module.exports={
       "url": "https://timothygu.github.io"
     }
   ],
-  "license": "Apache-2.0",
-  "main": "./lib/ejs.js",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/mde/ejs.git"
-  },
-  "bugs": {
-    "url": "https://github.com/mde/ejs/issues"
-  },
-  "homepage": "https://github.com/mde/ejs",
   "dependencies": {},
+  "description": "Embedded JavaScript templates",
   "devDependencies": {
-    "browserify": "^8.0.3",
-    "istanbul": "~0.3.5",
+    "browserify": "^13.0.1",
+    "eslint": "^3.0.0",
+    "istanbul": "~0.4.3",
     "jake": "^8.0.0",
-    "jsdoc": "^3.3.0-beta1",
-    "lru-cache": "^2.5.0",
-    "mocha": "^2.1.0",
+    "jsdoc": "^3.4.0",
+    "lru-cache": "^4.0.1",
+    "mocha": "^3.0.2",
     "rimraf": "^2.2.8",
-    "uglify-js": "^2.4.16"
+    "uglify-js": "^2.6.2"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "21444ba09386f0c65b6eafb96a3d51bcb3be80d1",
+    "tarball": "https://registry.npmjs.org/ejs/-/ejs-2.5.2.tgz"
   },
   "engines": {
     "node": ">=0.10.0"
   },
-  "scripts": {
-    "test": "mocha",
-    "coverage": "istanbul cover node_modules/mocha/bin/_mocha",
-    "doc": "rimraf out && jsdoc -c jsdoc.json lib/* docs/jsdoc/*",
-    "devdoc": "rimraf out && jsdoc -p -c jsdoc.json lib/* docs/jsdoc/*"
-  },
-  "_id": "ejs@2.4.1",
-  "_shasum": "82e15b1b2a1f948b18097476ba2bd7c66f4d1566",
-  "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.4.1.tgz",
-  "_from": "ejs@>=2.4.1 <3.0.0",
-  "_npmVersion": "2.10.1",
-  "_nodeVersion": "0.12.4",
-  "_npmUser": {
-    "name": "mde",
-    "email": "mde@fleegix.org"
-  },
+  "homepage": "https://github.com/mde/ejs",
+  "keywords": [
+    "template",
+    "engine",
+    "ejs"
+  ],
+  "license": "Apache-2.0",
+  "main": "./lib/ejs.js",
   "maintainers": [
     {
       "name": "tjholowaychuk",
@@ -1314,17 +1908,23 @@ module.exports={
       "email": "mde@fleegix.org"
     }
   ],
-  "dist": {
-    "shasum": "82e15b1b2a1f948b18097476ba2bd7c66f4d1566",
-    "tarball": "http://registry.npmjs.org/ejs/-/ejs-2.4.1.tgz"
+  "name": "ejs",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mde/ejs.git"
   },
-  "directories": {},
-  "readme": "ERROR: No README data found!"
+  "scripts": {
+    "coverage": "istanbul cover node_modules/mocha/bin/_mocha",
+    "devdoc": "rimraf out && jsdoc -p -c jsdoc.json lib/* docs/jsdoc/*",
+    "doc": "rimraf out && jsdoc -c jsdoc.json lib/* docs/jsdoc/*",
+    "test": "mocha"
+  },
+  "version": "2.5.2"
 }
 
-},{}],9:[function(require,module,exports){
-
-},{}],10:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -1552,16 +2152,105 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":11}],11:[function(require,module,exports){
+},{"_process":13}],13:[function(require,module,exports){
 // shim for using process in browser
-
 var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
 var queue = [];
 var draining = false;
 var currentQueue;
 var queueIndex = -1;
 
 function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
     draining = false;
     if (currentQueue.length) {
         queue = currentQueue.concat(queue);
@@ -1577,7 +2266,7 @@ function drainQueue() {
     if (draining) {
         return;
     }
-    var timeout = setTimeout(cleanUpNextTick);
+    var timeout = runTimeout(cleanUpNextTick);
     draining = true;
 
     var len = queue.length;
@@ -1594,7 +2283,7 @@ function drainQueue() {
     }
     currentQueue = null;
     draining = false;
-    clearTimeout(timeout);
+    runClearTimeout(timeout);
 }
 
 process.nextTick = function (fun) {
@@ -1606,7 +2295,7 @@ process.nextTick = function (fun) {
     }
     queue.push(new Item(fun, args));
     if (queue.length === 1 && !draining) {
-        setTimeout(drainQueue, 0);
+        runTimeout(drainQueue);
     }
 };
 
@@ -1645,4 +2334,4 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}]},{},[3]);
+},{}]},{},[4]);
