@@ -3,6 +3,8 @@
  */
 var Templates = require('../Templates');
 var Storage = require('../Storage');
+var API = require('../API');
+
 
 //Перелік розмірів піци
 var PizzaSize = {
@@ -28,10 +30,20 @@ a.onclick = function () {
     updateCart();
 }
 
+var buy = document.getElementById("create-order");
+
+buy.onclick = function () {
+    Storage.set('cart', Cart);
+
+    var url = window.location.href;
+    url = 'http://localhost:5050/order.html';
+    window.location.href = url;
+    initialiseCart();
+}
+
 
 function addToCart(pizza, size) {
     //Додавання однієї піци в кошик покупок
-
     var node = {
         pizza: pizza,
         size: size,

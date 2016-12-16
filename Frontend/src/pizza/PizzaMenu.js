@@ -3,11 +3,16 @@
  */
 var Templates = require('../Templates');
 var PizzaCart = require('./PizzaCart');
-var Pizza_List = require('../Pizza_List');
+var API = require('../API');
+var Pizza_List = null;
+
 
 //HTML едемент куди будуть додаватися піци
 var $pizza_list = $("#pizza_list");
 
+var url = window.location.href;
+
+if(url == "http://localhost:5050/"){
 var all = document.getElementById("all");
 
 all.onclick = function () {
@@ -36,7 +41,7 @@ ocean.onclick = function () {
     filterPizza('ocean');
 }
 
-
+}
 
 
 
@@ -59,9 +64,10 @@ function showPizzaList(list) {
 
         $pizza_list.append($node);
     }
-
-    list.forEach(showOnePizza);
-    $(".count-all").text(pizza_shown.length);
+    if (typeof list != 'undefined'){
+        list.forEach(showOnePizza);
+        $(".count-all").text(pizza_shown.length);
+    }
 }
 
 function filterPizza(filter) {
@@ -97,7 +103,16 @@ function filterPizza(filter) {
 
 function initialiseMenu() {
     //Показуємо усі піци
-    filterPizza('all');
+    API.getPizzaList(function (err, data) {
+        if(err == null) {
+            Pizza_List = data;
+        }else{
+            console.log(err);
+        }
+
+    });
+    showPizzaList(Pizza_List);
+
 }
 
 exports.filterPizza = filterPizza;

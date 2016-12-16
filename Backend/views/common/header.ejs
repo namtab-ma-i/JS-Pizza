@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><%= pageTitle %> - Pizza</title>
+
+    <!-- Bootsrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+    <!-- LESS основний файл -->
+    <link rel="stylesheet/less" type="text/css" href="assets/less/index.less" />
+    <link rel="stylesheet/less" type="text/css" href="assets/less/order.less" />
+    <!-- LESS JavaScript компілятор -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.5.3/less.min.js"></script>
+
+
+</head>
+<body id="body">
+
+<nav class="navbar navbar-fixed-top">
+    <div class="menu-bar">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="pizza-top">
+                <a href="#">
+                    <span class="logo-pizza"> PIZZA </span>
+                    <span class="logo-kma"> KMA </span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav top-menu-elements">
+                <li class="tel">
+                    050 737 7 373
+                </li>
+                <li class="top-24">
+                    24/7 every day
+                </li>
+                <li class="free-shipping">
+                    Free delivery
+                </li>
+                <li><button href="#" class="btn btn-warning login-button">Log in</button></li>
+            </ul>
+            <div class="bottom-menu-elements">
+                <span>Pizza</span>
+            </div>
+        </div><!-- /.navbar-collapse -->
+    </div>
+</nav>
+
+<div class="container-fluid row">
+    <div class="col-md-9 col-sm-6 container ">
+
+        <div class="badge">
+            <div class="title">
+                This week<br>discount
+            </div>
+            <div class="percent">
+                -20%
+            </div>
+        </div>

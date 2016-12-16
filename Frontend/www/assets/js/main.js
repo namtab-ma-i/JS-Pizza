@@ -1,5 +1,49 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /**
+ * Created by chaika on 09.02.16.
+ */
+var API_URL = "http://localhost:5050";
+
+function backendGet(url, callback) {
+    $.ajax({
+        url: API_URL + url,
+        type: 'GET',
+        success: function(data){
+            callback(null, data);
+        },
+        error: function() {
+            callback(new Error("Ajax Failed"));
+        }
+    })
+}
+
+function backendPost(url, data, callback) {
+    $.ajax({
+        url: API_URL + url,
+        type: 'POST',
+        contentType : 'application/json',
+        data: JSON.stringify(data),
+        success: function(data){
+            console.log("Inside ajax: "+data);
+            callback(null, data);
+        },
+        error: function() {
+            callback(new Error("Ajax Failed"));
+        }
+    })
+}
+
+exports.getPizzaList = function(callback) {
+    backendGet("/api/get-pizza-list/", callback);
+};
+
+exports.createOrder = function(order_info, callback) {
+    console.log("Inside API: "+order_info);
+    backendPost("/api/create-order/", order_info, callback);
+};
+
+},{}],2:[function(require,module,exports){
+/**
  * Created by diana on 12.01.16.
  */
 
@@ -186,7 +230,7 @@ var pizza_info = [
 ];
 
 module.exports = pizza_info;
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 var basil	=	require('basil.js');
 basil	=	new	basil();
 exports.get =	function(key)	{
@@ -196,7 +240,7 @@ exports.set =	function(key,	value)	{
     return	basil.set(key,	value);
 };
 
-},{"basil.js":7}],3:[function(require,module,exports){
+},{"basil.js":8}],4:[function(require,module,exports){
 /**
  * Created by chaika on 02.02.16.
  */
@@ -208,30 +252,35 @@ exports.PizzaMenu_OneItem = ejs.compile("<%\n\nfunction getIngredientsArray(pizz
 
 exports.PizzaCart_OneItem = ejs.compile("<%\n\nfunction getSizeValues(pizza, size) {\n    //Отримує вміст піци\n    var content;\n    if(size == \"small_size\") {\n        content = pizza.small_size;\n    }else{\n        content = pizza.big_size;\n    }\n    var result = [];\n\n    //Object.keys повертає масив ключів в об’єкті JavaScript\n\n    Object.keys(content).forEach(function(key){\n\n        //a.concat(b) створює спільний масив із масивів a та b\n        result = result.concat(content[key]);\n    });\n\n    return result;\n}\n\n%>\n\n\n\n<div class=\"good\">\n    <img class=\"right-img\" src=\"<%= pizza.icon %>\">\n    <span class=\"good-title\"><%= pizza.title %></span>\n    <div class=\"details\">\n        <img src=\"assets/images/size-icon.svg\">\n        <span><%= getSizeValues(pizza, size)[1] %></span>\n        <img class=\"apply-margin\" src=\"assets/images/weight.svg\">\n        <span><%= getSizeValues(pizza, size)[0] %></span>\n    </div>\n    <div class=\"bottom-row-good\">\n        <div class=\"good-price\">\n            <span><%= getSizeValues(pizza, size)[2] %> грн.</span>\n        </div>\n        <div class=\"plus-minus\">\n            <button class=\"button-minus\" data-title=\"Decrease\">-</button>\n            <span class=\"count\"><%= quantity %></span>\n            <button class=\"button-plus\" data-title=\"Increase\">+</button>\n        </div>\n        <div class=\"bought-delete\">\n                    <span>\n                        <button class=\"button-delete\" data-title=\"Remove\">X</button>\n                    </span>\n        </div>\n    </div>\n</div>\n\n");
 
-},{"ejs":9}],4:[function(require,module,exports){
+},{"ejs":10}],5:[function(require,module,exports){
 /**
  * Created by chaika on 25.01.16.
  */
 
-$(function(){
+$(document).ready(function (){
 
-   // var fs = require('fs');
-    //This code will execute when the page is ready
     var PizzaMenu = require('./pizza/PizzaMenu');
     var PizzaCart = require('./pizza/PizzaCart');
     var Pizza_List = require('./Pizza_List');
 
-    PizzaCart.initialiseCart();
-    PizzaMenu.initialiseMenu();
 
+    PizzaCart.initialiseCart();
+    var url = window.location.href;
+    if(url == "http://localhost:5050/") {
+        PizzaMenu.initialiseMenu();
+    }
+   // var fs = require('fs');
+    //This code will execute when the page is ready
 
 });
-},{"./Pizza_List":1,"./pizza/PizzaCart":5,"./pizza/PizzaMenu":6}],5:[function(require,module,exports){
+},{"./Pizza_List":2,"./pizza/PizzaCart":6,"./pizza/PizzaMenu":7}],6:[function(require,module,exports){
 /**
  * Created by chaika on 02.02.16.
  */
 var Templates = require('../Templates');
 var Storage = require('../Storage');
+var API = require('../API');
+
 
 //Перелік розмірів піци
 var PizzaSize = {
@@ -257,10 +306,20 @@ a.onclick = function () {
     updateCart();
 }
 
+var buy = document.getElementById("create-order");
+
+buy.onclick = function () {
+    Storage.set('cart', Cart);
+
+    var url = window.location.href;
+    url = 'http://localhost:5050/order.html';
+    window.location.href = url;
+    initialiseCart();
+}
+
 
 function addToCart(pizza, size) {
     //Додавання однієї піци в кошик покупок
-
     var node = {
         pizza: pizza,
         size: size,
@@ -367,17 +426,22 @@ exports.getPizzaInCart = getPizzaInCart;
 exports.initialiseCart = initialiseCart;
 
 exports.PizzaSize = PizzaSize;
-},{"../Storage":2,"../Templates":3}],6:[function(require,module,exports){
+},{"../API":1,"../Storage":3,"../Templates":4}],7:[function(require,module,exports){
 /**
  * Created by chaika on 02.02.16.
  */
 var Templates = require('../Templates');
 var PizzaCart = require('./PizzaCart');
-var Pizza_List = require('../Pizza_List');
+var API = require('../API');
+var Pizza_List = null;
+
 
 //HTML едемент куди будуть додаватися піци
 var $pizza_list = $("#pizza_list");
 
+var url = window.location.href;
+
+if(url == "http://localhost:5050/"){
 var all = document.getElementById("all");
 
 all.onclick = function () {
@@ -406,7 +470,7 @@ ocean.onclick = function () {
     filterPizza('ocean');
 }
 
-
+}
 
 
 
@@ -429,9 +493,10 @@ function showPizzaList(list) {
 
         $pizza_list.append($node);
     }
-
-    list.forEach(showOnePizza);
-    $(".count-all").text(pizza_shown.length);
+    if (typeof list != 'undefined'){
+        list.forEach(showOnePizza);
+        $(".count-all").text(pizza_shown.length);
+    }
 }
 
 function filterPizza(filter) {
@@ -467,12 +532,21 @@ function filterPizza(filter) {
 
 function initialiseMenu() {
     //Показуємо усі піци
-    filterPizza('all');
+    API.getPizzaList(function (err, data) {
+        if(err == null) {
+            Pizza_List = data;
+        }else{
+            console.log(err);
+        }
+
+    });
+    showPizzaList(Pizza_List);
+
 }
 
 exports.filterPizza = filterPizza;
 exports.initialiseMenu = initialiseMenu;
-},{"../Pizza_List":1,"../Templates":3,"./PizzaCart":5}],7:[function(require,module,exports){
+},{"../API":1,"../Templates":4,"./PizzaCart":6}],8:[function(require,module,exports){
 (function () {
 	// Basil
 	var Basil = function (options) {
@@ -860,9 +934,9 @@ exports.initialiseMenu = initialiseMenu;
 
 })();
 
-},{}],8:[function(require,module,exports){
-
 },{}],9:[function(require,module,exports){
+
+},{}],10:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -1663,7 +1737,7 @@ if (typeof window != 'undefined') {
   window.ejs = exports;
 }
 
-},{"../package.json":11,"./utils":10,"fs":8,"path":12}],10:[function(require,module,exports){
+},{"../package.json":12,"./utils":11,"fs":9,"path":13}],11:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -1806,7 +1880,7 @@ exports.cache = {
 };
 
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports={
   "_args": [
     [
@@ -1924,7 +1998,7 @@ module.exports={
   "version": "2.5.2"
 }
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -2152,7 +2226,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":13}],13:[function(require,module,exports){
+},{"_process":14}],14:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -2334,4 +2408,4 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}]},{},[4]);
+},{}]},{},[5]);

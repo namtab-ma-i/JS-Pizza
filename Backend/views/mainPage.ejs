@@ -1,0 +1,29 @@
+<% include common/header.ejs %>
+
+<div class="all-pizzas">
+    <div class="remains">
+        <span class="title">All pizzas</span>
+        <span class="count-all" id="all-pizzas-count">1</span>
+    </div>
+
+</div>
+
+
+<div class="pizzas-buttons">
+    <ul class="list">
+        <li class="element"><button class="btn btn-warning button-in-list" id="all" active>All</button> </li>
+        <li class="element"><button class="btn btn-warning button-in-list" id="meat">Meat</button> </li>
+        <li class="element"><button class="btn btn-warning button-in-list" id="vegan">Vegan</button> </li>
+        <li class="element"><button class="btn btn-warning button-in-list" id="ocean">Seafood</button> </li>
+    </ul>
+
+
+</div>
+
+<div class="row" id="pizza_list">
+    <!-- Here goes pizza list -->
+</div>
+
+<div id="googleMap"></div>
+
+<% include common/footer.ejs %>
